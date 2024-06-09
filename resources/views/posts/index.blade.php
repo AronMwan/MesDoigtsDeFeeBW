@@ -15,18 +15,13 @@
                     @endif
 
                     @foreach ($posts as $post)
-                        <h3>{{ $post->title }}</h3>
-                        <p>{{ $post->content }}</p>
-                        <small>Gepost door {{ $post->user->name }}</small>
+                        <h3><a href="{{route('posts.show', $post->id)}}">{{ $post->title }}</a></h3>
+                        <small>Gepost door <a href="{{route('profile', $post->user->name)}}">{{ $post->user->name }}</small></a>
                         <small>op {{ $post->created_at->format('d/m/Y \o\m H:i') }}</small>
                         @auth
                         @if($post->user->id == Auth::id())
                             <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary">Bewerk</a>
-                            <form method="POST" action="{{ route('posts.destroy', $post->id) }}" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Verwijder</button>
-                            </form>
+                      
                         @else
                             <form method="POST" action="{{ route('like', $post->id) }}" style="display:inline;">
                                 @csrf
@@ -34,6 +29,17 @@
                                 <button type="submit" class="btn btn-primary">Like</button>
                             </form>
 
+                            @endif
+                            
+                        @endauth
+
+                        @auth
+                        @if(Auth::user()->is_admin)
+                            <form method="POST" action="{{ route('posts.destroy', $post->id) }}" style="display:inline;" onclick="return confirm('Are you sure want to delete this post?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Verwijder</button>
+                            </form>
                             @endif
                         @endauth
                         <br>

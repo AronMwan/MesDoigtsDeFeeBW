@@ -72,10 +72,18 @@ class PostController extends Controller
         return redirect()->route('index')->with('status', 'Post updated successfully');
     }
 
+    public function show($id)
+    {
+        $post = Post::findOrFail($id);
+        return view('posts.show', compact('post'));
+    }
+
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
+        $likes = Like::where('post_id', '=', $post->id)->delete();
         $post->delete();
+
         return redirect()->route('index')->with('status', 'Post deleted successfully');
     }
 }
