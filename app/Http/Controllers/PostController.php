@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 
 use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Storage;
+
 
 
 class PostController extends Controller
@@ -30,19 +32,52 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-
         $validated = $request->validate([
             'title' => 'required|min:3',
             'content' => 'required|min:10',
+            'cover_image' => 'nullable|image|max:1999',
         ]);
+        if ($request->hasFile('cover_image')) {
+            $fileNameToStore = $request->file('cover_image')->store('cover_images', 'public');
+    } else {
+        $fileNameToStore = 'noimage.jpg';
+        }
 
         $post = new Post;
         $post->title = $validated['title'];
         $post->content = $validated['content'];
         $post->user_id = Auth::user()->id;
-        $post->save();    
-    
+        $post->cover_image = $fileNameToStore;
+        $post->save();
+
         return redirect()->route('index')->with('status', 'Post created successfully');
+    }
+
+    public function update(Request $request, $id)
+    {
+    $validated = $request->validate([
+        'title' => 'required|min:3',
+        'content' => 'required|min:10',
+        'cover_image' => 'nullable|image|max:1999',
+    ]);
+
+    $post = Post::findOrFail($id);
+
+    if ($request->hasFile('cover_image')) {
+        if ($post->cover_image != 'noimage.jpg') {
+            Storage::delete('public/' . $post->cover_image);
+        }
+        $fileNameToStore = $request->file('cover_image')->store('cover_images', 'public');
+    } else {
+        $fileNameToStore = $post->cover_image;
+    }
+
+        $post->title = $validated['title'];
+        $post->content = $validated['content'];
+        $post->cover_image = $fileNameToStore;
+        $post->save();
+
+        return redirect()->route('index')->with('status', 'Post updated successfully');
     }
 
     public function edit($id)
@@ -54,23 +89,7 @@ class PostController extends Controller
         return view('posts.edit', compact('post'));
     }   
 
-    public function update(Request $request, $id)
-    {
-        $validated = $request->validate([
-            'title' => 'required|min:3',
-            'content' => 'required|min:10',
-        ]);
-
-        $post = Post::findOrFail($id);
-        if($post->user_id != Auth::user()->id){
-            abort(403);
-        }
-        $post->title = $validated['title'];
-        $post->content = $validated['content'];
-        $post->save();    
     
-        return redirect()->route('index')->with('status', 'Post updated successfully');
-    }
 
     public function show($id)
     {

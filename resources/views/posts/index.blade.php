@@ -15,6 +15,9 @@
                     @endif
 
                     @foreach ($posts as $post)
+                    @if ($post->cover_image != 'noimage.jpg')
+        <img src="/storage/{{ $post->cover_image }}" alt="{{ $post->title }}" class="img-fluid">
+    @endif
                         <h3><a href="{{route('posts.show', $post->id)}}">{{ $post->title }}</a></h3>
                         <small>Gepost door <a href="{{route('profile', $post->user->name)}}">{{ $post->user->name }}</small></a>
                         <small>op {{ $post->created_at->format('d/m/Y \o\m H:i') }}</small>

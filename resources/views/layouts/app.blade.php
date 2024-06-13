@@ -15,6 +15,9 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -30,30 +33,39 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
-                       
-                        
                         <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            Kledingstukken
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('posts.index') }}">
-                                        Alle kledingstukken
-                                    </a>
-                                    @auth
-                                    <a class="dropdown-item" href="{{ route('posts.create') }}">
-                                        Nieuw kledingstuk
-                                    </a>
-                                </div>        
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                Kledingstukken
                             </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('posts.index') }}">
+                                    Alle kledingstukken
+                                </a>
+                                @auth
+                                <a class="dropdown-item" href="{{ route('posts.create') }}">
+                                    Nieuw kledingstuk
+                                </a>
+                                @endauth
+                            </div>        
                         </li>
-                        @endauth
-                    
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('contact.index') }}">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('faq.index') }}">FAQ</a>
+                        </li>
+                        @if(Auth::user()->is_admin)
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('faq-categories.index') }}">FAQ-Categories</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('faq.manage') }}">FAQ-Questions</a>
+                        </li>
+                        @endif
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('about.index') }}">About</a>
                     </ul>
-
-                       
-
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
@@ -63,7 +75,6 @@
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
                             @endif
-
                             @if (Route::has('register'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
@@ -74,20 +85,20 @@
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
-
-                                
-
-
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('profile', Auth::user()->name) }}">
-                                    Mijn Profiel
-                                </a>
+                                    <a class="dropdown-item" href="{{ route('profile', Auth::user()->name) }}">
+                                        Mijn Profiel
+                                    </a>
+                                    @if(Auth::user()->is_admin)
+                                    <a class="dropdown-item" href="{{ route('admin') }}">
+                                        Admin
+                                    </a>
+                                    @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
@@ -103,5 +114,8 @@
             @yield('content')
         </main>
     </div>
+
+    <!-- Scripts -->
+
 </body>
 </html>

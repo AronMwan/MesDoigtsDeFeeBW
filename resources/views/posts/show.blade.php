@@ -14,6 +14,10 @@
                         </div>
                     @endif
                         
+                    @if ($post->cover_image != 'noimage.jpg')
+                        <img src="/storage/{{ $post->cover_image }}" alt="{{ $post->title }}" class="img-fluid">
+                        <br>
+                    @endif
 
                         {{$post->content}}
                         <br>

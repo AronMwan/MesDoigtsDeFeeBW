@@ -5,10 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Nieuw Kledingstuk</div>
+                <div class="card-header">Kledingstuk Bewerken</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('posts.update', $post->id) }}">
+                    <form method="POST" action="{{ route('posts.update', $post->id) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
@@ -39,6 +39,18 @@
                                 @enderror
                             </div>
                         </div>
+
+                        <div class="row mb-3">
+        <label for="cover_image" class="col-md-4 col-form-label text-md-end">Omslagafbeelding</label>
+        <div class="col-md-6">
+            <input type="file" class="form-control @error('cover_image') is-invalid @enderror" name="cover_image">
+            @error('cover_image')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+    </div>
 
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
