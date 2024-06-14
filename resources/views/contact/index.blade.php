@@ -10,7 +10,7 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('contact.store') }}">
+    <form method="POST" action="{{ route('contact.store') }}" id="contactForm">
         @csrf
         <div class="mb-3">
             <label for="name" class="form-label">Naam</label>
@@ -38,10 +38,15 @@
 
     @if(Auth::user()-> is_admin)
 
-    <form method="GET" action="{{ route('contact.admin') }}">
+    <form method="GET" action="{{route('contact.admin') }}">
         
         <button type="submit" class="btn btn-danger mt-3">Alle Contactformulieren</button>
 
     @endif
 </div>
 @endsection
+<script>
+    $(document).ready(function() {
+        $('#contactForm').validate();
+    });
+</script>

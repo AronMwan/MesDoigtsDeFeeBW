@@ -14,6 +14,12 @@
                         </div>
                     @endif
 
+                    <a href="https://laravel.com/docs/11.x/middleware">Laravel 11 Middleware</a>
+                    <a href="https://laravel.com/docs/11.x/eloquent-relationships#many-to-many">Laravel 11 Many to Many</a>
+                    <a href="https://github.com/AronMwan/MesDoigtsDeFeeBW">Github</a>
+                    <a href="https://www.youtube.com/watch?v=yyHeqTZEINU&t=86s">Update User Profile</a>
+                    <a href="https://www.chatgpt.com">ChatGPT</a>
+
                    
                 </div>
             </div>

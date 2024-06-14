@@ -39,15 +39,14 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'birthday' => 'date',  
 
-        ];
-    }
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+
+
 
 
     public function posts()

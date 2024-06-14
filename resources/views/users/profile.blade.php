@@ -68,6 +68,12 @@
                         @csrf
                         <button type="submit" class="btn btn-primary mt-4">Bewerk Profiel</button>
                     </form>
+
+                    <h2 class="mt-4">Verander Wachtwoord</h2>
+                    <form action="{{route('change-password', $user->name)}}" method="GET">
+                        @csrf
+                        <button type="submit" class="btn btn-primary mt-4">Verander Wachtwoord</button>
+                    </form>
                     @endif
                 </div>
             </div>

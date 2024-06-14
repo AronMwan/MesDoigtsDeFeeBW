@@ -19,32 +19,39 @@
                         <br>
                     @endif
 
-                        {{$post->content}}
-                        <br>
-                        {{$post->likes->count()}} likes
-                        <br>
-                        @auth
-                        @if($post->user->id == Auth::id() || Auth::user()->is_admin)
-                            <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary">Bewerk</a>
-                            <form method="POST" action="{{ route('posts.destroy', $post->id) }}" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Verwijder</button>
-                            </form>
-                        @else
-                            <form method="POST" action="{{ route('like', $post->id) }}" style="display:inline;">
-                                @csrf
-                                @method('GET')
-                                <button type="submit" class="btn btn-primary">Like</button>
-                            </form>
+                    {{$post->content}}
+                    <br>
+                    @if($post->tags->count() > 0)
+                        <p>Tags: 
+                            @foreach($post->tags as $tag)
+                                <span class="badge badge-secondary">{{ $tag->name }}</span>
+                            @endforeach
+                        </p>
+                    @endif
+                    {{$post->likes->count()}} likes
+                    <br>
+                    @auth
+                    @if($post->user->id == Auth::id() || Auth::user()->is_admin)
+                        <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary">Bewerk</a>
+                        <form method="POST" action="{{ route('posts.destroy', $post->id) }}" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Verwijder</button>
+                        </form>
+                    @else
+                        <form method="POST" action="{{ route('like', $post->id) }}" style="display:inline;">
+                            @csrf
+                            @method('GET')
+                            <button type="submit" class="btn btn-primary">Like</button>
+                        </form>
 
-                            @endif
-                        @endauth
-                        <br>
-                        <small>Gepost door <a href="{{route('profile', $post->user->name)}}">{{ $post->user->name }}</small></a>
-                        <small>op {{ $post->created_at->format('d/m/Y \o\m H:i') }}</small>
+                        @endif
+                    @endauth
+                    <br>
+                    <small>Gepost door <a href="{{route('profile', $post->user->name)}}">{{ $post->user->name }}</a></small>
+                    <small>op {{ $post->created_at->format('d/m/Y \o\m H:i') }}</small>
                         
-                        <hr>
+                    <hr>
                 </div>
             </div>
         </div>
